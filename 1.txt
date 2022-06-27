@@ -1,0 +1,98 @@
+import pygame
+from random import randint
+import time
+
+RED = (255, 0, 0)
+GREEN = (0, 255, 51)
+BlUE = (0, 0, 255)
+ORANGE = (255, 123, 0)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
+LIGHT_GREEN = (200, 255, 200)
+LIGHT_RED = (250, 128, 114)
+BLACK = (0, 0, 0)
+DARK_BLUE = (0, 0, 100)
+LIGHT_BLUE = (80, 80, 255)
+
+pygame.init()
+
+back=(200,255,255)
+
+window = pygame.display.set_mode((500,500))
+window.fill(back)
+
+clock = pygame.time.Clock()
+
+class Area():
+
+    def __init__(self, x, y, width, height, color):
+        self.rect = pygame.Rect(x,y,width,height)
+        self.fill_color = color
+    def color(self,new_color):
+        self.fill_color = new_color
+
+    def fill(self):
+        pygame.draw.rect(window, self.fill_color, self.rect)  
+
+    def outline(self,frame_color,thickness):
+        pygame.draw.rect(window,frame_color,self.rect,thickness)
+
+    def collidepoint(self,x,y):
+        return self.rect.collidepoint(x,y)
+
+class Label(Area):
+    def set_text(self, text, fsize, t_color):
+        self.image = pygame.font.SysFont('verdana', fsize).render(text,True,t_color)
+    
+    def draw(self,shift_x = 15,shift_y = 50):
+        window.blit(self.image,(self.rect.x + shift_x, self.rect.y + shift_y))
+
+x = 50
+y = 100
+width = 80
+height = 150
+cards=list()
+for i in range(4):
+    card = Label(x, y, width, height, YELLOW)
+    cards.append(card)
+    x += 105
+wait = 1
+
+while True:
+    
+    
+    if wait == 0:
+        num = randint(0,3)
+        wait = 20
+        for i in range(len(cards)):
+            cards[i].color(YELLOW)
+            cards[i].fill()
+            cards[i].outline(BlUE,10)
+
+            cards[i].set_text('CLICK',25,BLACK)
+            if i == num:
+                cards[i].draw()
+            
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over =True
+    else: 
+        wait -= 1
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_over =True
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
+            x,y=event.pos
+            for i in range(len(cards)):
+                if cards[i].collidepoint(x,y):
+                    if num == i:
+                        cards[i].color(GREEN)
+                        
+                    else:
+                        cards[i].color(RED)
+                    
+                    cards[i].fill()
+                    cards[i].outline(BlUE,15)
+    pygame.display.update()
+    clock.tick(40)
