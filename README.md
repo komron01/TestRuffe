@@ -24,4 +24,4 @@ zxc
 
 
 
->**This is the _Program_ in order to check wether you are healthy or not**
+>**V1.1 была добавлена новый экран, а первый был закончен**
