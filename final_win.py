@@ -4,8 +4,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLay
 from instr import *
 
 class FinalWin(QWidget):
-    def __init__(self):
+    def __init__(self, exp):
         super().__init__()
+        self.exp=exp
         self.set_appear()
         self.initUI()
         self.connects()
@@ -15,7 +16,9 @@ class FinalWin(QWidget):
         self.resize(win_width,win_height)
         self.move(win_x,win_y)
     def initUI(self):
-        self.index=QLabel(txt_index)
+        ind=(4*(self.exp.test1+self.exp.test2+self.exp.test3)-200)/10
+        ind1=txt_index+str(ind)
+        self.index=QLabel(ind1)
         self.workheart=QLabel(txt_workheart)
         self.m_line=QVBoxLayout()
         self.m_line.addWidget(self.index, alignment=Qt.AlignCenter)
