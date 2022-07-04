@@ -6,6 +6,13 @@ from PyQt5.QtGui import QFont
 from instr import *
 from final_win import *
 
+class Expirement:
+    def __init__(self, test1, test2,test3):
+        self.test1=test1
+        self.test2=test2
+        self.test3=test3
+        
+
 class TestWin(QWidget):
     def __init__(self):
         super().__init__()
@@ -64,9 +71,65 @@ class TestWin(QWidget):
 
         self.setLayout(self.h_line)
 
+    def timer_test1(self):
+        global time
+        time = QTime(0, 0, 15)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer1Event)
+        self.timer.start(1000)
+
+    def timer1Event(self):
+        global time
+        time=time.addSecs(-1)
+        self.timer_txt.setText(time.toString('hh:mm:ss'))
+        if (time.toString('hh:mm:ss'))=='00:00:00':
+            self.timer.stop()
+    def timer_test2(self):
+        global time
+        time = QTime(0, 0, 45)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer2Event)
+        self.timer.start(1000)
+
+    def timer2Event(self):
+        global time
+        time=time.addSecs(-1)
+        self.timer_txt.setText(time.toString('hh:mm:ss'))
+        if (time.toString('hh:mm:ss'))=='00:00:00':
+            self.timer.stop()
+
+    def timer_test3(self):
+        global time
+        time = QTime(0, 1, 0)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer3Event)
+        self.timer.start(1000)
+
+    def timer3Event(self):
+        global time
+        time=time.addSecs(-1)
+        self.timer_txt.setText(time.toString('hh:mm:ss'))
+        t1=time.toString('hh:mm:ss')
+        t2=int(t1[6:8])
+        if t2>15 and t2<45:
+            self.timer_txt.setStyleSheet('color:rgb(0,0,0)')
+        else:
+            self.timer_txt.setStyleSheet('color:rgb(0,255,0)')
+
+        if (time.toString('hh:mm:ss'))=='00:00:00':
+            self.timer.stop()
+
     def connects(self):
         self.btn_res.clicked.connect(self.next_click)
+        self.btn1.clicked.connect(self.timer_test1)
+        self.btn2.clicked.connect(self.timer_test2)
+        self.btn3.clicked.connect(self.timer_test3)
 
     def next_click(self):
         self.hide()
-        self.fw=FinalWin()   
+        ts1=int(self.test1.text())
+        ts2=int(self.test2.text())
+        ts3=int(self.test3.text())
+        self.exp1=Expirement(ts1,ts2,ts3)
+        #print(self.test1.text(), self.test2.text(), self.test3.text())
+        self.fw=FinalWin(self.exp1)   
